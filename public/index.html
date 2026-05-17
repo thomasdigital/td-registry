@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>td-registry</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  body { font: 14px/1.5 -apple-system, BlinkMacSystemFont, "SF Mono", Menlo, monospace; max-width: 720px; margin: 4rem auto; padding: 0 1rem; color: #111; }
+  h1 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+  code { background: #f4f4f4; padding: 0.15rem 0.3rem; border-radius: 3px; }
+  pre { background: #f4f4f4; padding: 0.75rem; border-radius: 4px; overflow-x: auto; }
+  a { color: #0a0a0a; }
+</style>
+</head>
+<body>
+<h1>td-registry</h1>
+<p>Thomas Digital private shadcn registry. Channel-based versioning per ADR-02.</p>
+<p>Active channels:</p>
+<ul>
+  <li><a href="/r/v1/index.json"><code>@td-v1</code></a> — active</li>
+  <li><a href="/r/v2/index.json"><code>@td-v2</code></a> — preview</li>
+</ul>
+<p>Manifest: <a href="/r/registry.json"><code>/r/registry.json</code></a></p>
+<p>Client setup (clients pin one channel):</p>
+<pre>// components.json
+{
+  "registries": {
+    "@td-v1": "https://registry.thomasdigital.com/r/v1/{name}.json"
+  }
+}</pre>
+<p>Then: <code>pnpm dlx shadcn@latest add @td-v1/&lt;name&gt;</code></p>
+</body>
+</html>

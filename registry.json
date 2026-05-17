@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "td",
+  "homepage": "https://registry.thomasdigital.com",
+  "description": "Thomas Digital private shadcn registry. Channel-based versioning per ADR-02. Breaking changes ship under a new channel (@td-v2, @td-v3); existing channels are immutable once frozen.",
+  "channels": {
+    "v1": {
+      "status": "active",
+      "frozen": false,
+      "url": "https://registry.thomasdigital.com/r/v1/{name}.json",
+      "description": "Initial channel. Components live under registry/v1/. Becomes frozen on first @td-v2 release.",
+      "freeze_ceremony": "See README.md > V1 Freeze Ceremony"
+    },
+    "v2": {
+      "status": "preview",
+      "frozen": false,
+      "url": "https://registry.thomasdigital.com/r/v2/{name}.json",
+      "description": "Next breaking-change channel. Empty placeholder; populated only when a v1 component requires a breaking change."
+    }
+  },
+  "items": []
+}

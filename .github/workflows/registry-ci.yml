@@ -1,0 +1,81 @@
+name: registry-ci
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Validate registry JSON
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run registry:validate
+      - run: pnpm run build
+
+  freeze-guard:
+    # Enforces ADR-02: once a channel is marked "frozen": true in
+    # registry/<channel>/index.json, any change to files under that channel
+    # (other than CHANGES.md append) fails CI.
+    name: ADR-02 freeze guard
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compute changed files vs base
+        id: diff
+        run: |
+          git fetch origin "${{ github.base_ref }}"
+          git diff --name-only "origin/${{ github.base_ref }}"...HEAD > changed.txt
+          cat changed.txt
+      - name: Check frozen channels
+        run: |
+          set -euo pipefail
+          for channel_dir in registry/v*; do
+            channel=$(basename "$channel_dir")
+            index="$channel_dir/index.json"
+            [ -f "$index" ] || continue
+            frozen=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$index','utf8')).frozen === true ? 'true' : 'false')")
+            if [ "$frozen" = "true" ]; then
+              echo "Channel $channel is FROZEN. Checking diff..."
+              # Only CHANGES.md append-only edits are allowed under a frozen channel.
+              while read -r f; do
+                if [[ "$f" == registry/$channel/* && "$f" != "registry/$channel/CHANGES.md" ]]; then
+                  echo "::error file=$f::ADR-02 violation: edit under frozen channel $channel (only CHANGES.md may be appended)."
+                  exit 1
+                fi
+              done < changed.txt
+            fi
+          done
+
+  chromatic:
+    # Visual regression placeholder per ADR-02. Wire CHROMATIC_PROJECT_TOKEN to
+    # repo secrets when Storybook is added; until then this is a no-op.
+    name: Chromatic visual regression (placeholder)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Skip until Chromatic token wired
+        run: |
+          if [ -z "${CHROMATIC_PROJECT_TOKEN:-}" ]; then
+            echo "CHROMATIC_PROJECT_TOKEN not set; visual regression deferred until Storybook + token are added."
+            exit 0
+          fi
+          echo "Would run: pnpm dlx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN"
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}

@@ -1,0 +1,31 @@
+{
+  "name": "td-registry",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Thomas Digital private shadcn registry. Channel-based versioning per ADR-02.",
+  "scripts": {
+    "build": "node scripts/build-registry.mjs",
+    "dev": "next dev",
+    "start": "next start",
+    "lint": "next lint",
+    "registry:validate": "node scripts/validate-registry.mjs",
+    "registry:add": "bash scripts/add-component.sh",
+    "registry:migrate-template": "tsx scripts/migrate-codemod-template.ts"
+  },
+  "dependencies": {
+    "next": "15.0.3",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@types/jscodeshift": "^0.12.0",
+    "@types/node": "^22.9.0",
+    "jscodeshift": "^17.1.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  },
+  "packageManager": "pnpm@9.12.3",
+  "engines": {
+    "node": ">=20"
+  }
+}
