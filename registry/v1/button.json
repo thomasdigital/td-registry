@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "button",
+  "type": "registry:ui",
+  "description": "TD primary/secondary button. Sized via prop. Tokens via --td-primary / --td-secondary.",
+  "meta": {
+    "tags": ["td-v1", "button", "cta"]
+  },
+  "td": {
+    "channel": "v1",
+    "added_at": "2026-05-17T00:00:00.000Z",
+    "source": "td-authored"
+  },
+  "files": [
+    {
+      "path": "components/td/button.tsx",
+      "type": "registry:ui",
+      "target": "",
+      "content": "import * as React from \"react\";\n\ntype Variant = \"primary\" | \"secondary\" | \"ghost\";\ntype Size = \"sm\" | \"md\" | \"lg\";\n\nexport interface TdButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {\n  variant?: Variant;\n  size?: Size;\n  asChild?: boolean;\n}\n\nconst sizeClasses: Record<Size, string> = {\n  sm: \"h-9 px-3 text-sm\",\n  md: \"h-10 px-5 text-base\",\n  lg: \"h-12 px-7 text-lg\",\n};\n\nconst base =\n  \"inline-flex items-center justify-center rounded-md font-medium tracking-tight transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--td-primary,theme(colors.slate.900))] disabled:opacity-50 disabled:pointer-events-none\";\n\nfunction variantStyle(variant: Variant): React.CSSProperties {\n  if (variant === \"primary\") {\n    return {\n      backgroundColor: \"var(--td-primary, #2E6554)\",\n      color: \"var(--td-on-primary, #ffffff)\",\n    };\n  }\n  if (variant === \"secondary\") {\n    return {\n      backgroundColor: \"var(--td-secondary, #234F98)\",\n      color: \"var(--td-on-secondary, #ffffff)\",\n    };\n  }\n  return {\n    backgroundColor: \"transparent\",\n    color: \"var(--td-primary, #2E6554)\",\n    borderColor: \"var(--td-primary, #2E6554)\",\n  };\n}\n\nexport const TdButton = React.forwardRef<HTMLButtonElement, TdButtonProps>(\n  ({ variant = \"primary\", size = \"md\", className = \"\", style, children, ...props }, ref) => {\n    const ghostBorder = variant === \"ghost\" ? \"border\" : \"\";\n    return (\n      <button\n        ref={ref}\n        className={`${base} ${sizeClasses[size]} ${ghostBorder} ${className}`.trim()}\n        style={{ ...variantStyle(variant), ...style }}\n        {...props}\n      >\n        {children}\n      </button>\n    );\n  }\n);\nTdButton.displayName = \"TdButton\";\n\nexport default TdButton;\n"
+    }
+  ]
+}
