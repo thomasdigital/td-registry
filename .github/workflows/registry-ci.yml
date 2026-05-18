@@ -52,10 +52,28 @@ jobs:
             frozen=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$index','utf8')).frozen === true ? 'true' : 'false')")
             if [ "$frozen" = "true" ]; then
               echo "Channel $channel is FROZEN. Checking diff..."
-              # Only CHANGES.md append-only edits are allowed under a frozen channel.
+              # Detect freeze ceremony: index.json flipped from frozen=false on base to frozen=true on head.
+              # During the ceremony, the only allowed edits under registry/<channel>/ are index.json + CHANGES.md.
+              # After the ceremony is merged, even index.json becomes immutable.
+              base_index_frozen="false"
+              if git cat-file -e "origin/${{ github.base_ref }}:$index" 2>/dev/null; then
+                base_index_frozen=$(git show "origin/${{ github.base_ref }}:$index" | node -e "let s='';process.stdin.on('data',c=>s+=c);process.stdin.on('end',()=>{try{console.log(JSON.parse(s).frozen===true?'true':'false')}catch(_){console.log('false')}})")
+              fi
+              if [ "$base_index_frozen" = "false" ]; then
+                echo "Detected v1 freeze ceremony PR (frozen: false -> true). Allowing index.json + CHANGES.md edits only."
+                ALLOW_INDEX=1
+              else
+                ALLOW_INDEX=0
+              fi
               while read -r f; do
-                if [[ "$f" == registry/$channel/* && "$f" != "registry/$channel/CHANGES.md" ]]; then
-                  echo "::error file=$f::ADR-02 violation: edit under frozen channel $channel (only CHANGES.md may be appended)."
+                if [[ "$f" == registry/$channel/* ]]; then
+                  if [[ "$f" == "registry/$channel/CHANGES.md" ]]; then
+                    continue
+                  fi
+                  if [[ "$ALLOW_INDEX" == "1" && "$f" == "registry/$channel/index.json" ]]; then
+                    continue
+                  fi
+                  echo "::error file=$f::ADR-02 violation: edit under frozen channel $channel (only CHANGES.md may be appended; index.json editable only during freeze ceremony)."
                   exit 1
                 fi
               done < changed.txt

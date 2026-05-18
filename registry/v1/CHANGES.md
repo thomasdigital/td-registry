@@ -25,6 +25,10 @@ All components consume color via CSS custom properties (`--td-primary`, `--td-se
 
 ## Freeze marker
 
-- frozen_at: NOT YET FROZEN
-- frozen_by: n/a
-- frozen_at_commit: n/a
+- frozen_at: 2026-05-17
+- frozen_by: Victor Thomas <victor@thomasdigital.com>
+- frozen_at_commit: (squash commit of this PR will be the canonical freeze SHA)
+
+After this PR merges, any change to files under `registry/v1/` other than
+`CHANGES.md` will fail the `freeze-guard` CI check per ADR-02. Breaking
+changes ship to `@td-v2` with a migration codemod under `scripts/codemods/`.
