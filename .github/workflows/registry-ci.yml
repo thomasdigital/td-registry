@@ -8,7 +8,7 @@ on:
 
 jobs:
   validate:
-    name: Validate registry JSON
+    name: validate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
     # Enforces ADR-02: once a channel is marked "frozen": true in
     # registry/<channel>/index.json, any change to files under that channel
     # (other than CHANGES.md append) fails CI.
-    name: ADR-02 freeze guard
+    name: freeze-guard
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:
