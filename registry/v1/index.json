@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "td-v1",
   "channel": "v1",
-  "frozen": false,
+  "frozen": true,
   "homepage": "https://registry.thomasdigital.com",
   "items": [
     {
