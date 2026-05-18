@@ -4,5 +4,54 @@
   "channel": "v1",
   "frozen": false,
   "homepage": "https://registry.thomasdigital.com",
-  "items": []
+  "items": [
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "url": "https://registry.thomasdigital.com/r/v1/button.json",
+      "tags": ["td-v1", "button", "cta"]
+    },
+    {
+      "name": "nav",
+      "type": "registry:ui",
+      "url": "https://registry.thomasdigital.com/r/v1/nav.json",
+      "tags": ["td-v1", "nav", "header"]
+    },
+    {
+      "name": "hero",
+      "type": "registry:ui",
+      "url": "https://registry.thomasdigital.com/r/v1/hero.json",
+      "tags": ["td-v1", "hero", "biotech"]
+    },
+    {
+      "name": "section",
+      "type": "registry:ui",
+      "url": "https://registry.thomasdigital.com/r/v1/section.json",
+      "tags": ["td-v1", "section", "container"]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "url": "https://registry.thomasdigital.com/r/v1/card.json",
+      "tags": ["td-v1", "card"]
+    },
+    {
+      "name": "footer",
+      "type": "registry:ui",
+      "url": "https://registry.thomasdigital.com/r/v1/footer.json",
+      "tags": ["td-v1", "footer"]
+    },
+    {
+      "name": "pipeline-table",
+      "type": "registry:ui",
+      "url": "https://registry.thomasdigital.com/r/v1/pipeline-table.json",
+      "tags": ["td-v1", "biotech", "pipeline", "table"]
+    },
+    {
+      "name": "contact-form",
+      "type": "registry:ui",
+      "url": "https://registry.thomasdigital.com/r/v1/contact-form.json",
+      "tags": ["td-v1", "form", "contact"]
+    }
+  ]
 }

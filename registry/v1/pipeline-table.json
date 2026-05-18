@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pipeline-table",
+  "type": "registry:ui",
+  "description": "Biotech pipeline table. Drug name, indication, phase progress bar (Preclinical -> Phase 1 -> 2 -> 3 -> Approved).",
+  "meta": {
+    "tags": ["td-v1", "biotech", "pipeline", "table"]
+  },
+  "td": {
+    "channel": "v1",
+    "added_at": "2026-05-17T00:00:00.000Z",
+    "source": "td-authored"
+  },
+  "files": [
+    {
+      "path": "components/td/pipeline-table.tsx",
+      "type": "registry:ui",
+      "target": "",
+      "content": "import * as React from \"react\";\n\nexport type PipelinePhase = \"preclinical\" | \"phase1\" | \"phase2\" | \"phase3\" | \"approved\";\n\nexport interface PipelineRow {\n  drug: string;\n  indication: string;\n  phase: PipelinePhase;\n  note?: string;\n}\n\nexport interface TdPipelineTableProps {\n  rows: PipelineRow[];\n  className?: string;\n}\n\nconst PHASE_ORDER: PipelinePhase[] = [\n  \"preclinical\",\n  \"phase1\",\n  \"phase2\",\n  \"phase3\",\n  \"approved\",\n];\n\nconst PHASE_LABEL: Record<PipelinePhase, string> = {\n  preclinical: \"Preclinical\",\n  phase1: \"Phase 1\",\n  phase2: \"Phase 2\",\n  phase3: \"Phase 3\",\n  approved: \"Approved\",\n};\n\nfunction phaseProgress(phase: PipelinePhase): number {\n  const idx = PHASE_ORDER.indexOf(phase);\n  return ((idx + 1) / PHASE_ORDER.length) * 100;\n}\n\nexport function TdPipelineTable({ rows, className = \"\" }: TdPipelineTableProps) {\n  return (\n    <div\n      className={`w-full overflow-hidden rounded-xl border ${className}`.trim()}\n      style={{ borderColor: \"var(--td-border, rgba(15,23,42,0.08))\" }}\n    >\n      <div className=\"hidden grid-cols-[2fr_2fr_3fr] gap-4 bg-slate-50 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 md:grid\">\n        <span>Program</span>\n        <span>Indication</span>\n        <span>Status</span>\n      </div>\n      <ul className=\"flex flex-col divide-y divide-slate-100\">\n        {rows.map((row) => (\n          <li\n            key={row.drug}\n            className=\"grid grid-cols-1 gap-3 px-6 py-5 md:grid-cols-[2fr_2fr_3fr] md:items-center md:gap-4\"\n          >\n            <div>\n              <div className=\"text-base font-semibold text-slate-900\">{row.drug}</div>\n              {row.note ? <div className=\"text-xs text-slate-500\">{row.note}</div> : null}\n            </div>\n            <div className=\"text-sm text-slate-700\">{row.indication}</div>\n            <div className=\"flex flex-col gap-2\">\n              <div\n                className=\"h-2 w-full overflow-hidden rounded-full\"\n                style={{ backgroundColor: \"var(--td-track, rgba(15,23,42,0.08))\" }}\n              >\n                <div\n                  className=\"h-full rounded-full transition-[width]\"\n                  style={{\n                    width: `${phaseProgress(row.phase)}%`,\n                    backgroundColor: \"var(--td-primary, #2E6554)\",\n                  }}\n                />\n              </div>\n              <div\n                className=\"text-xs font-medium uppercase tracking-[0.18em]\"\n                style={{ color: \"var(--td-secondary, #234F98)\" }}\n              >\n                {PHASE_LABEL[row.phase]}\n              </div>\n            </div>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}\n\nexport default TdPipelineTable;\n"
+    }
+  ]
+}

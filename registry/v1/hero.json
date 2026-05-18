@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hero",
+  "type": "registry:ui",
+  "description": "Biotech-friendly hero. Bokeh background, big-type headline, vertical CTA stack. Tokens via --td-primary / --td-secondary.",
+  "meta": {
+    "tags": ["td-v1", "hero", "biotech"]
+  },
+  "td": {
+    "channel": "v1",
+    "added_at": "2026-05-17T00:00:00.000Z",
+    "source": "td-authored"
+  },
+  "files": [
+    {
+      "path": "components/td/hero.tsx",
+      "type": "registry:ui",
+      "target": "",
+      "content": "import * as React from \"react\";\n\nexport interface TdHeroCta {\n  label: string;\n  href: string;\n  variant?: \"primary\" | \"secondary\";\n}\n\nexport interface TdHeroProps {\n  eyebrow?: string;\n  headline: string;\n  body?: string;\n  ctas?: TdHeroCta[];\n  /** Optional background image URL; falls back to a CSS bokeh gradient. */\n  backgroundImage?: string;\n  className?: string;\n}\n\nconst bokehBackground = (img?: string): React.CSSProperties => ({\n  backgroundImage: [\n    \"radial-gradient(circle at 18% 22%, rgba(255,255,255,0.18) 0, transparent 32%)\",\n    \"radial-gradient(circle at 78% 68%, rgba(255,255,255,0.12) 0, transparent 28%)\",\n    \"radial-gradient(circle at 50% 100%, var(--td-secondary, #234F98) 0, transparent 55%)\",\n    \"linear-gradient(135deg, var(--td-primary, #2E6554) 0%, var(--td-secondary, #234F98) 100%)\",\n    img ? `url(${img})` : \"\",\n  ]\n    .filter(Boolean)\n    .join(\", \"),\n  backgroundSize: \"cover\",\n  backgroundPosition: \"center\",\n  backgroundBlendMode: img ? \"overlay\" : \"normal\",\n});\n\nexport function TdHero({\n  eyebrow,\n  headline,\n  body,\n  ctas = [],\n  backgroundImage,\n  className = \"\",\n}: TdHeroProps) {\n  return (\n    <section\n      className={`relative isolate overflow-hidden ${className}`.trim()}\n      style={bokehBackground(backgroundImage)}\n    >\n      <div className=\"mx-auto flex max-w-5xl flex-col items-start gap-8 px-6 py-28 md:py-40\">\n        {eyebrow ? (\n          <span className=\"inline-block rounded-full bg-white/15 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-white backdrop-blur\">\n            {eyebrow}\n          </span>\n        ) : null}\n        <h1 className=\"max-w-3xl text-4xl font-semibold leading-[1.05] tracking-tight text-white md:text-6xl\">\n          {headline}\n        </h1>\n        {body ? (\n          <p className=\"max-w-xl text-base leading-relaxed text-white/85 md:text-lg\">{body}</p>\n        ) : null}\n        {ctas.length > 0 ? (\n          <div className=\"flex flex-col items-start gap-3\">\n            {ctas.map((cta) => (\n              <a\n                key={cta.href}\n                href={cta.href}\n                className=\"inline-flex h-11 items-center rounded-md px-6 text-sm font-medium transition-opacity hover:opacity-90\"\n                style={{\n                  backgroundColor:\n                    cta.variant === \"secondary\"\n                      ? \"rgba(255,255,255,0.12)\"\n                      : \"#ffffff\",\n                  color:\n                    cta.variant === \"secondary\"\n                      ? \"#ffffff\"\n                      : \"var(--td-primary, #2E6554)\",\n                  border:\n                    cta.variant === \"secondary\"\n                      ? \"1px solid rgba(255,255,255,0.45)\"\n                      : \"1px solid transparent\",\n                }}\n              >\n                {cta.label}\n              </a>\n            ))}\n          </div>\n        ) : null}\n      </div>\n    </section>\n  );\n}\n\nexport default TdHero;\n"
+    }
+  ]
+}

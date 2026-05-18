@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "section",
+  "type": "registry:ui",
+  "description": "Generic content container with optional eyebrow, headline, body, CTA. Light/dark surface variants.",
+  "meta": {
+    "tags": ["td-v1", "section", "container"]
+  },
+  "td": {
+    "channel": "v1",
+    "added_at": "2026-05-17T00:00:00.000Z",
+    "source": "td-authored"
+  },
+  "files": [
+    {
+      "path": "components/td/section.tsx",
+      "type": "registry:ui",
+      "target": "",
+      "content": "import * as React from \"react\";\n\nexport interface TdSectionProps {\n  eyebrow?: string;\n  headline?: string;\n  body?: React.ReactNode;\n  cta?: { label: string; href: string };\n  surface?: \"light\" | \"dark\" | \"tinted\";\n  align?: \"left\" | \"center\";\n  className?: string;\n  children?: React.ReactNode;\n}\n\nconst surfaceStyle: Record<NonNullable<TdSectionProps[\"surface\"]>, React.CSSProperties> = {\n  light: { backgroundColor: \"#ffffff\", color: \"#0f172a\" },\n  dark: {\n    backgroundColor: \"var(--td-primary, #2E6554)\",\n    color: \"#ffffff\",\n  },\n  tinted: {\n    backgroundColor: \"var(--td-tint, #F2F6F4)\",\n    color: \"#0f172a\",\n  },\n};\n\nexport function TdSection({\n  eyebrow,\n  headline,\n  body,\n  cta,\n  surface = \"light\",\n  align = \"left\",\n  className = \"\",\n  children,\n}: TdSectionProps) {\n  const alignment = align === \"center\" ? \"items-center text-center\" : \"items-start text-left\";\n  return (\n    <section className={`w-full ${className}`.trim()} style={surfaceStyle[surface]}>\n      <div className={`mx-auto flex max-w-5xl flex-col ${alignment} gap-6 px-6 py-20 md:py-28`}>\n        {eyebrow ? (\n          <span\n            className=\"text-xs font-semibold uppercase tracking-[0.2em]\"\n            style={{ color: surface === \"dark\" ? \"#ffffff\" : \"var(--td-secondary, #234F98)\" }}\n          >\n            {eyebrow}\n          </span>\n        ) : null}\n        {headline ? (\n          <h2 className=\"max-w-3xl text-3xl font-semibold leading-tight tracking-tight md:text-4xl\">\n            {headline}\n          </h2>\n        ) : null}\n        {body ? <div className=\"max-w-2xl text-base leading-relaxed opacity-90\">{body}</div> : null}\n        {children}\n        {cta ? (\n          <a\n            href={cta.href}\n            className=\"mt-2 inline-flex h-10 items-center rounded-md px-5 text-sm font-medium transition-opacity hover:opacity-90\"\n            style={{\n              backgroundColor:\n                surface === \"dark\" ? \"#ffffff\" : \"var(--td-primary, #2E6554)\",\n              color: surface === \"dark\" ? \"var(--td-primary, #2E6554)\" : \"#ffffff\",\n            }}\n          >\n            {cta.label}\n          </a>\n        ) : null}\n      </div>\n    </section>\n  );\n}\n\nexport default TdSection;\n"
+    }
+  ]
+}

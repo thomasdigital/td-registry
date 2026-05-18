@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "footer",
+  "type": "registry:ui",
+  "description": "TD footer. Logo, columns of links, social row, legal line.",
+  "meta": {
+    "tags": ["td-v1", "footer"]
+  },
+  "td": {
+    "channel": "v1",
+    "added_at": "2026-05-17T00:00:00.000Z",
+    "source": "td-authored"
+  },
+  "files": [
+    {
+      "path": "components/td/footer.tsx",
+      "type": "registry:ui",
+      "target": "",
+      "content": "import * as React from \"react\";\n\nexport interface TdFooterColumn {\n  title: string;\n  links: { label: string; href: string }[];\n}\n\nexport interface TdFooterSocial {\n  label: string;\n  href: string;\n}\n\nexport interface TdFooterProps {\n  brand: string;\n  tagline?: string;\n  columns: TdFooterColumn[];\n  social?: TdFooterSocial[];\n  legal: string;\n  className?: string;\n}\n\nexport function TdFooter({ brand, tagline, columns, social = [], legal, className = \"\" }: TdFooterProps) {\n  return (\n    <footer\n      className={`w-full ${className}`.trim()}\n      style={{ backgroundColor: \"var(--td-primary, #2E6554)\", color: \"#ffffff\" }}\n    >\n      <div className=\"mx-auto flex max-w-6xl flex-col gap-12 px-6 py-16\">\n        <div className=\"grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]\">\n          <div className=\"flex flex-col gap-3\">\n            <span className=\"text-xl font-semibold tracking-tight\">{brand}</span>\n            {tagline ? <p className=\"max-w-sm text-sm leading-relaxed text-white/75\">{tagline}</p> : null}\n          </div>\n          {columns.map((col) => (\n            <div key={col.title} className=\"flex flex-col gap-3\">\n              <h4 className=\"text-xs font-semibold uppercase tracking-[0.2em] text-white/70\">{col.title}</h4>\n              <ul className=\"flex flex-col gap-2\">\n                {col.links.map((link) => (\n                  <li key={link.href}>\n                    <a\n                      href={link.href}\n                      className=\"text-sm text-white/85 transition-colors hover:text-white\"\n                    >\n                      {link.label}\n                    </a>\n                  </li>\n                ))}\n              </ul>\n            </div>\n          ))}\n        </div>\n        <div className=\"flex flex-col gap-4 border-t border-white/15 pt-6 text-sm text-white/70 md:flex-row md:items-center md:justify-between\">\n          <span>{legal}</span>\n          {social.length > 0 ? (\n            <ul className=\"flex flex-wrap gap-4\">\n              {social.map((s) => (\n                <li key={s.href}>\n                  <a href={s.href} className=\"transition-colors hover:text-white\">\n                    {s.label}\n                  </a>\n                </li>\n              ))}\n            </ul>\n          ) : null}\n        </div>\n      </div>\n    </footer>\n  );\n}\n\nexport default TdFooter;\n"
+    }
+  ]
+}

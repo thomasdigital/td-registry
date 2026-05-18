@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "nav",
+  "type": "registry:ui",
+  "description": "TD top nav. 5 nav items + optional CTA button. Tokens via --td-primary.",
+  "meta": {
+    "tags": ["td-v1", "nav", "header"]
+  },
+  "td": {
+    "channel": "v1",
+    "added_at": "2026-05-17T00:00:00.000Z",
+    "source": "td-authored"
+  },
+  "files": [
+    {
+      "path": "components/td/nav.tsx",
+      "type": "registry:ui",
+      "target": "",
+      "content": "import * as React from \"react\";\n\nexport interface TdNavItem {\n  label: string;\n  href: string;\n}\n\nexport interface TdNavProps {\n  brand: string;\n  brandHref?: string;\n  items: TdNavItem[];\n  cta?: { label: string; href: string };\n  className?: string;\n}\n\nexport function TdNav({ brand, brandHref = \"/\", items, cta, className = \"\" }: TdNavProps) {\n  return (\n    <header\n      className={`w-full border-b bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70 ${className}`.trim()}\n      style={{ borderColor: \"var(--td-border, rgba(15,23,42,0.08))\" }}\n    >\n      <nav className=\"mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-4\">\n        <a\n          href={brandHref}\n          className=\"text-lg font-semibold tracking-tight\"\n          style={{ color: \"var(--td-primary, #2E6554)\" }}\n        >\n          {brand}\n        </a>\n        <ul className=\"hidden items-center gap-7 md:flex\">\n          {items.map((item) => (\n            <li key={item.href}>\n              <a\n                href={item.href}\n                className=\"text-sm font-medium text-slate-700 transition-colors hover:text-[var(--td-primary,#2E6554)]\"\n              >\n                {item.label}\n              </a>\n            </li>\n          ))}\n        </ul>\n        {cta ? (\n          <a\n            href={cta.href}\n            className=\"inline-flex h-10 items-center rounded-md px-4 text-sm font-medium text-white transition-opacity hover:opacity-90\"\n            style={{ backgroundColor: \"var(--td-primary, #2E6554)\" }}\n          >\n            {cta.label}\n          </a>\n        ) : (\n          <span className=\"hidden md:inline-block w-0\" aria-hidden />\n        )}\n      </nav>\n    </header>\n  );\n}\n\nexport default TdNav;\n"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "card",
+  "type": "registry:ui",
+  "description": "TD content card. Image + headline + body + optional CTA.",
+  "meta": {
+    "tags": ["td-v1", "card"]
+  },
+  "td": {
+    "channel": "v1",
+    "added_at": "2026-05-17T00:00:00.000Z",
+    "source": "td-authored"
+  },
+  "files": [
+    {
+      "path": "components/td/card.tsx",
+      "type": "registry:ui",
+      "target": "",
+      "content": "import * as React from \"react\";\n\nexport interface TdCardProps {\n  image?: { src: string; alt: string };\n  eyebrow?: string;\n  headline: string;\n  body?: string;\n  cta?: { label: string; href: string };\n  className?: string;\n}\n\nexport function TdCard({ image, eyebrow, headline, body, cta, className = \"\" }: TdCardProps) {\n  return (\n    <article\n      className={`group flex h-full flex-col overflow-hidden rounded-xl border bg-white shadow-sm transition-shadow hover:shadow-md ${className}`.trim()}\n      style={{ borderColor: \"var(--td-border, rgba(15,23,42,0.08))\" }}\n    >\n      {image ? (\n        <div className=\"aspect-[16/10] w-full overflow-hidden bg-slate-100\">\n          <img\n            src={image.src}\n            alt={image.alt}\n            className=\"h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]\"\n          />\n        </div>\n      ) : null}\n      <div className=\"flex flex-1 flex-col gap-3 p-6\">\n        {eyebrow ? (\n          <span\n            className=\"text-xs font-semibold uppercase tracking-[0.18em]\"\n            style={{ color: \"var(--td-secondary, #234F98)\" }}\n          >\n            {eyebrow}\n          </span>\n        ) : null}\n        <h3 className=\"text-xl font-semibold leading-snug tracking-tight text-slate-900\">\n          {headline}\n        </h3>\n        {body ? <p className=\"text-sm leading-relaxed text-slate-600\">{body}</p> : null}\n        {cta ? (\n          <a\n            href={cta.href}\n            className=\"mt-auto inline-flex items-center gap-1 text-sm font-medium hover:underline\"\n            style={{ color: \"var(--td-primary, #2E6554)\" }}\n          >\n            {cta.label} <span aria-hidden>{\"->\"}</span>\n          </a>\n        ) : null}\n      </div>\n    </article>\n  );\n}\n\nexport default TdCard;\n"
+    }
+  ]
+}
